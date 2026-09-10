@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nanovector"
-version = "0.1.1"
+version = "0.1.2"
 description = "Minimalist, bare-metal SIMD-accelerated vector search and episodic memory engine for AI agents in ~120KB with zero dependencies."
 readme = "README.md"
 authors = [

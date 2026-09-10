@@ -47,7 +47,7 @@ ext_modules = [
 
 setup(
     name="nanovector",
-    version="0.1.1",
+    version="0.1.2",
     package_dir={"": "python"},
     packages=find_packages(where="python"),
     install_requires=["numpy>=1.20"],

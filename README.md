@@ -8,12 +8,14 @@
 [![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi)](https://pypi.org/project/nanovector/)
 [![Python Versions](https://img.shields.io/pypi/pyversions/nanovector?style=for-the-badge&color=brightgreen)](https://pypi.org/project/nanovector/)
 [![GitHub Release](https://img.shields.io/github/v/release/eminsk/nanovector?style=for-the-badge&color=orange)](https://github.com/eminsk/nanovector/releases)
+[![Open In Colab](https://img.shields.io/badge/Open%20in%20Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![SIMD](https://img.shields.io/badge/SIMD-AVX2%20%7C%20NEON%20%7C%20FASM-purple?style=for-the-badge)](#architecture)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-ZERO-success?style=for-the-badge)](#why-nanovector)
 
 <p align="center">
   <a href="#quickstart">Quickstart</a> •
+  <a href="#colab-demo">Google Colab</a> •
   <a href="#why-nanovector">Why NanoVector?</a> •
   <a href="#benchmarks">Benchmarks</a> •
   <a href="#architecture">Architecture</a> •
@@ -129,6 +131,21 @@ recalled_facts = memory.recall(query_vec, top_k=3)
 for match in recalled_facts:
     print(f"Score: {match.score:.4f} -> Memory: {match.metadata}")
 ```
+
+---
+
+## <a id="colab-demo"></a>🚀 Interactive Google Colab Demo
+
+Run NanoVector interactively in your browser with zero local setup:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb)
+
+The [Interactive Colab Notebook](https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb) demonstrates:
+- **Zero-Setup Installation & Hardware SIMD Detection:** Compiles native C/AVX2 on Colab CPU in seconds.
+- **10-line Cosine Similarity Search:** Indexing and querying embeddings with JSON metadata.
+- **Real-World AI Agent Episodic Memory:** Recalling instructions and preferences using `sentence-transformers` embeddings (`all-MiniLM-L6-v2`).
+- **Single-File `.nvec` Brain Persistence:** Instant binary save and zero-overhead reload.
+- **Live 50,000-Vector Benchmark:** Measuring ingestion throughput (1M+ vectors/sec) and search latency (~0.1 ms) directly on Colab VM hardware.
 
 ---
 
