@@ -16,8 +16,8 @@ extern "C" {
 
 #define NANOVECTOR_VERSION_MAJOR 0
 #define NANOVECTOR_VERSION_MINOR 1
-#define NANOVECTOR_VERSION_PATCH 0
-#define NANOVECTOR_VERSION_STRING "0.1.0"
+#define NANOVECTOR_VERSION_PATCH 1
+#define NANOVECTOR_VERSION_STRING "0.1.1"
 
 /* Supported distance/similarity metrics */
 typedef enum {

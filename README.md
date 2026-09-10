@@ -114,12 +114,19 @@ class AgentEpisodicMemory:
         return self.index.search(query_embedding, top_k=top_k)
 
 # Usage in Agent Loop
-memory = AgentEpisodicMemory()
-query_vec = np.random.randn(384).astype(np.float32)
+memory = AgentEpisodicMemory(filepath="agent_brain.nvec")
 
+# Store facts if brain is empty
+if len(memory.index) == 0:
+    memory.remember("mem_1", np.random.randn(384).astype(np.float32), "User prefers Python, C, and FASM.")
+    memory.remember("mem_2", np.random.randn(384).astype(np.float32), "NanoVector achieves sub-millisecond search.")
+    memory.remember("mem_3", np.random.randn(384).astype(np.float32), "Episodic memory saves state in single .nvec file.")
+
+query_vec = np.random.randn(384).astype(np.float32)
 recalled_facts = memory.recall(query_vec, top_k=3)
+
 for match in recalled_facts:
-    print(f"Score: {match.score:.3f} -> Memory: {match.metadata}")
+    print(f"Score: {match.score:.4f} -> Memory: {match.metadata}")
 ```
 
 ---

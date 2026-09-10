@@ -47,9 +47,10 @@ ext_modules = [
 
 setup(
     name="nanovector",
-    version="0.1.0",
+    version="0.1.1",
     package_dir={"": "python"},
     packages=find_packages(where="python"),
+    install_requires=["numpy>=1.20"],
     ext_modules=ext_modules,
     cmdclass={"build_ext": BuildExt},
     package_data={"nanovector": ["py.typed", "*.dll", "*.so", "*.dylib"]},
