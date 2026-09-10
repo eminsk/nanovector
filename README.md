@@ -5,10 +5,11 @@
 ### The SQLite of Vector Search & Episodic Memory for AI Agents
 **Bare-metal C99 · AVX2+FMA · ARM NEON · FASM x64 · Zero Dependencies · ~120 KB**
 
-[![PyPI Version](https://img.shields.io/pypi/v/nanovector.svg?style=for-the-badge&color=blue)](https://pypi.org/project/nanovector/)
-[![Python Versions](https://img.shields.io/pypi/pyversions/nanovector.svg?style=for-the-badge&color=brightgreen)](https://pypi.org/project/nanovector/)
+[![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi)](https://pypi.org/project/nanovector/)
+[![Python Versions](https://img.shields.io/pypi/pyversions/nanovector?style=for-the-badge&color=brightgreen)](https://pypi.org/project/nanovector/)
+[![GitHub Release](https://img.shields.io/github/v/release/eminsk/nanovector?style=for-the-badge&color=orange)](https://github.com/eminsk/nanovector/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
-[![SIMD](https://img.shields.io/badge/SIMD-AVX2%20%7C%20NEON%20%7C%20FASM-orange?style=for-the-badge)](#architecture)
+[![SIMD](https://img.shields.io/badge/SIMD-AVX2%20%7C%20NEON%20%7C%20FASM-purple?style=for-the-badge)](#architecture)
 [![Zero Dependencies](https://img.shields.io/badge/Dependencies-ZERO-success?style=for-the-badge)](#why-nanovector)
 
 <p align="center">
