@@ -73,7 +73,8 @@ index.add("doc_1", vec, metadata='{"author": "eminsk", "tag": "ai"}')
 # 3. Batch addition (Zero-Copy directly from 2D NumPy array)
 batch_vecs = np.random.randn(5000, 384).astype(np.float32)
 batch_ids = [f"turn_{i}" for i in range(5000)]
-index.add_batch(batch_ids, batch_vecs)
+batch_metas = [f'{{"turn_id": {i}, "role": "agent"}}' for i in range(5000)]
+index.add_batch(batch_ids, batch_vecs, metadatas=batch_metas)
 
 # 4. Search top-k nearest neighbors (returns in ~0.15 ms)
 query = np.random.randn(384).astype(np.float32)
