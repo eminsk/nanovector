@@ -4,8 +4,11 @@ Copyright (c) 2026 eminsk (M_N_Nik@yahoo.com)
 MIT License
 """
 
+import sys
 from typing import List, Optional, Any, Dict, Union
 from dataclasses import dataclass
+
+_dataclass_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 try:
     from nanovector._ext import Index as _NativeIndex, version, simd_backend
@@ -22,7 +25,7 @@ __version__ = version()
 __backend__ = simd_backend()
 
 
-@dataclass(frozen=True, slots=True)
+@dataclass(frozen=True, **_dataclass_kwargs)
 class Match:
     """Represents a single nearest-neighbor search result."""
     id: str
