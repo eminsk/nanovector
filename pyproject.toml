@@ -62,3 +62,7 @@ Documentation = "https://github.com/eminsk/nanovector#readme"
 Repository = "https://github.com/eminsk/nanovector"
 "Issue Tracker" = "https://github.com/eminsk/nanovector/issues"
 Changelog = "https://github.com/eminsk/nanovector/releases"
+
+[tool.pytest.ini_options]
+pythonpath = ["python"]
+
