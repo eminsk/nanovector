@@ -1,0 +1,52 @@
+# 📢 Hacker News Submission Guide for NanoVector
+
+### 📌 Title (Exact copy for HN submit field):
+```text
+Show HN: NanoVector – A 120KB zero-dependency vector search engine in C & SIMD
+```
+
+### 🔗 URL (Enter in the 'url' field on HN):
+```text
+https://github.com/eminsk/nanovector
+```
+
+*(Note: On Hacker News, you can either submit as a URL link, and immediately post the text below as the first comment, OR submit as a text post (Ask HN / Show HN with empty URL and text). The URL link + immediate first comment format is the standard, most successful way for open-source tools on HN).*
+
+---
+
+### 💬 First Comment / Description Text:
+
+```markdown
+Hi HN! I built NanoVector (https://github.com/eminsk/nanovector), a lightweight (~120KB unpacked, 38KB wheel) vector search engine and episodic memory store written in pure C99 with SIMD (AVX2+FMA, ARM NEON, and Flat Assembler x64), with zero external dependencies.
+
+### Why I built this:
+Whenever I built local LLM agents, CLI tools, or serverless workers (AWS Lambda), I noticed the absurdity of existing vector DB setups. To store a few thousand embeddings from agent conversation history or document chunks, importing `chromadb` pulls over 35 dependencies (`onnxruntime`, `pydantic`, `fastapi`, `duckdb`, etc.) and takes 1.5 to 2.5 seconds just to import.
+
+Furthermore, over 95% of agent workloads store between 50 and 50,000 vectors. At that scale, hierarchical graph traversal (HNSW) incurs cache thrashing and pointer indirection, while a linear SIMD scan over contiguous memory in L2 cache is faster, has zero index-building overhead, and guarantees 100% exact recall.
+
+### Key Highlights:
+- **Zero Dependencies:** Pure C extension + NumPy Buffer Protocol (zero copy). No BLAS, no OpenMP, no C++ runtime required.
+- **Cold Start:** Imports in < 1 ms (compared to ~1,850 ms for ChromaDB).
+- **Throughput:** Ingestion rate of 1,414,000 vectors/sec (384D) via direct contiguous memory writes.
+- **Search Latency:** 0.13 ms for N=2,000 in 384D (7,478 QPS on a single CPU core).
+- **GIL-Free:** Releases Python's GIL (`Py_BEGIN_ALLOW_THREADS`) during SIMD search, enabling concurrent queries with Python threads.
+- **Single-File Persistence:** Saves to a self-contained atomic `.nvec` binary file (like SQLite's `.db` file).
+- **Hardware Acceleration:** Handcrafted AVX2+FMA (8 floats per cycle unrolled 4x), ARM NEON (`vmlaq_f32`), and a standalone Flat Assembler (FASM) x64 engine.
+
+### Quick Example:
+```python
+import nanovector, numpy as np
+
+index = nanovector.Index(dim=384, metric="cosine")
+index.add("turn_1", np.random.randn(384).astype(np.float32), metadata='{"role": "user"}')
+
+results = index.search(np.random.randn(384).astype(np.float32), top_k=5)
+index.save("agent_brain.nvec")
+```
+
+- GitHub: https://github.com/eminsk/nanovector
+- PyPI: https://pypi.org/project/nanovector/
+- Interactive Google Colab Demo: https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb
+
+I'd love feedback on the memory layout, SIMD unrolling strategy, or use cases you might have for lightweight on-device agent memory!
+```
