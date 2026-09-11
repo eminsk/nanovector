@@ -125,6 +125,8 @@ print(f"Loaded {len(loaded)} vectors in {loaded.dim}D!")
 Here is how you give an LLM agent persistent memory without external database infrastructure:
 
 ```python
+import os
+import json
 import nanovector
 import numpy as np
 
