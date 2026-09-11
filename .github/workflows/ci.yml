@@ -37,7 +37,7 @@ jobs:
       env:
         PYTHONPATH: python
       run: |
-        pytest -v tests/test_index.py tests/test_multithreading.py
+        pytest -v tests/
 
     - name: Run Examples
       env:
