@@ -68,22 +68,22 @@ import numpy as np
 # 1. Initialize an index (dim=384 for all-MiniLM-L6-v2, 768 for BERT, 1536 for OpenAI)
 index = nanovector.Index(dim=384, metric="cosine")
 
-# 2. Add single embeddings with optional metadata strings
+# 2. Add single embeddings with metadata dict or string
 vec = np.random.randn(384).astype(np.float32)
-index.add("doc_1", vec, metadata='{"author": "eminsk", "tag": "ai"}')
+index.add("doc_1", vec, metadata={"author": "eminsk", "tag": "ai", "views": 1500})
 
 # 3. Batch addition (Zero-Copy directly from 2D NumPy array)
 batch_vecs = np.random.randn(5000, 384).astype(np.float32)
 batch_ids = [f"turn_{i}" for i in range(5000)]
-batch_metas = [f'{{"turn_id": {i}, "role": "agent"}}' for i in range(5000)]
+batch_metas = [{"turn_id": i, "role": "agent", "category": "tech" if i % 2 == 0 else "general"} for i in range(5000)]
 index.add_batch(batch_ids, batch_vecs, metadatas=batch_metas)
 
-# 4. Search top-k nearest neighbors (returns in ~0.15 ms)
+# 4. Search top-k nearest neighbors with metadata filtering (~0.15 ms)
 query = np.random.randn(384).astype(np.float32)
-results = index.search(query, top_k=5)
+results = index.search(query, top_k=5, filter={"role": "agent", "category": "tech"})
 
 for r in results:
-    print(f"[{r.id}] Score: {r.score:.4f} | Metadata: {r.metadata}")
+    print(f"[{r.id}] Score: {r.score:.4f} | Meta: {r.meta}")
 
 # 5. Single-file instant persistence (.nvec)
 index.save("agent_memory.nvec")
@@ -130,6 +130,63 @@ recalled_facts = memory.recall(query_vec, top_k=3)
 
 for match in recalled_facts:
     print(f"Score: {match.score:.4f} -> Memory: {match.metadata}")
+```
+
+---
+
+## 🔍 Metadata Filtering & Query Operators
+
+NanoVector supports expressive, zero-overhead metadata filtering without external query engines.
+
+```python
+# Exact match
+index.search(query, top_k=5, filter={"author": "eminsk", "published": True})
+
+# Comparison operators: $eq, $ne, $in, $nin, $gt, $gte, $lt, $lte
+index.search(query, top_k=5, filter={
+    "views": {"$gte": 500},
+    "category": {"$in": ["ai", "systems"]},
+    "archived": {"$ne": True}
+})
+
+# Custom lambda predicates
+index.search(query, top_k=5, filter=lambda meta: meta and meta.get("priority", 0) > 3)
+```
+
+---
+
+## 🦜 1-Line Drop-in LangChain Integration
+
+Replace ChromaDB or FAISS with **NanoVector** for **instant <1ms cold starts** and zero dependency bloat:
+
+```python
+from nanovector import NanoVectorStore
+from langchain_openai import OpenAIEmbeddings
+
+embeddings = OpenAIEmbeddings()
+
+# 1. Create VectorStore from raw texts (dim automatically inferred)
+vectorstore = NanoVectorStore.from_texts(
+    texts=[
+        "NanoVector is 3,000x faster to import than ChromaDB.",
+        "Episodic memory runs in bare-metal C99 AVX2 SIMD.",
+        "Pure zero-dependency lightweight vector search engine."
+    ],
+    embedding=embeddings,
+    metadatas=[{"source": "benchmark"}, {"source": "architecture"}, {"source": "design"}]
+)
+
+# 2. Similarity search with metadata filtering
+docs = vectorstore.similarity_search("cold start latency", k=1, filter={"source": "benchmark"})
+print(docs[0].page_content)
+# -> "NanoVector is 3,000x faster to import than ChromaDB."
+
+# 3. Use directly in LCEL (LangChain Expression Language) Chains & Agents
+retriever = vectorstore.as_retriever(search_kwargs={"k": 2})
+
+# 4. Save & reload single-file persistence
+vectorstore.save("agent_brain.nvec")
+reloaded_store = NanoVectorStore.load("agent_brain.nvec", embedding=embeddings)
 ```
 
 ---
@@ -229,9 +286,9 @@ Initializes an embedded vector index.
 
 | Method | Description |
 | :--- | :--- |
-| `add(id: str, vector: Any, metadata: Optional[str] = None)` | Adds a single 1D vector (NumPy array, list, or buffer) with unique ID and optional metadata string. |
-| `add_batch(ids: List[str], vectors: Any, metadatas: Optional[List[str]] = None)` | Adds multiple vectors in batch directly from 2D `numpy.ndarray` (**Zero-Copy**). Releases GIL. |
-| `search(query: Any, top_k: int = 10) -> List[Match]` | Searches Top-$K$ nearest neighbors for query vector. Releases GIL during search. |
+| `add(id: str, vector: Any, metadata: Optional[Union[str, dict]] = None)` | Adds a single 1D vector (NumPy array, list, or buffer) with unique ID and optional metadata dict/string. |
+| `add_batch(ids: List[str], vectors: Any, metadatas: Optional[Sequence[Union[str, dict]]] = None)` | Adds multiple vectors in batch directly from 2D `numpy.ndarray` (**Zero-Copy**). Releases GIL. |
+| `search(query: Any, top_k: int = 10, filter: Optional[Union[dict, callable]] = None) -> List[Match]` | Searches Top-$K$ nearest neighbors with optional metadata filter ($gte, $in, exact, lambda). Releases GIL. |
 | `save(filepath: str) -> None` | Serializes the entire index to a single `.nvec` binary file on disk. |
 | `load(filepath: str) -> Index` | Classmethod / function loading an index from a `.nvec` file in sub-millisecond time. |
 
@@ -240,7 +297,11 @@ Initializes an embedded vector index.
 * **`index.dim`** *(int)*: Dimensionality of indexed vectors.
 * **`index.count`** *(int)* or **`len(index)`**: Total number of indexed vectors.
 * **`index.metric`** *(str)*: Active distance metric.
-* **`nanovector.version()`** *(str)*: Library version string (e.g. `"0.1.0"`).
+* **`match.id`** *(str)*: ID of the matching item.
+* **`match.score`** *(float)*: Similarity score or distance.
+* **`match.meta`** *(dict or Any)*: Automatically parses JSON metadata string into a Python dict or primitive.
+* **`nanovector.NanoVectorStore`**: Drop-in LangChain `VectorStore` class compatible with LCEL chains and agents.
+* **`nanovector.version()`** *(str)*: Library version string (e.g. `"0.1.3"`).
 * **`nanovector.simd_backend()`** *(str)*: Active hardware acceleration backend (`"AVX2+FMA (x86_64)"`, `"ARM NEON"`, etc.).
 
 ---
