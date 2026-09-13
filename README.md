@@ -202,7 +202,7 @@ The [Interactive Colab Notebook](https://colab.research.google.com/github/eminsk
 - **10-line Cosine Similarity Search:** Indexing and querying embeddings with JSON metadata.
 - **Real-World AI Agent Episodic Memory:** Recalling instructions and preferences using `sentence-transformers` embeddings (`all-MiniLM-L6-v2`).
 - **Single-File `.nvec` Brain Persistence:** Instant binary save and zero-overhead reload.
-- **Live 50,000-Vector Benchmark:** Measuring ingestion throughput (1M+ vectors/sec) and search latency (~0.1 ms) directly on Colab VM hardware.
+- **Live 50,000-Vector Benchmark:** Measuring ingestion throughput (1M+ vectors/sec) and search latency (~0.13 ms at 2k vectors, ~6.7 ms at 50k vectors) directly on Colab VM hardware.
 
 ---
 
