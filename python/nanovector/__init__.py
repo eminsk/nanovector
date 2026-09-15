@@ -19,7 +19,7 @@ except ImportError:
         from _ext import Index as _NativeIndex, version, simd_backend
     except ImportError:
         _NativeIndex = None
-        def version(): return "0.1.3"
+        def version(): return "0.1.4"
         def simd_backend(): return "Scalar (Pending Build)"
 
 __version__ = version()
