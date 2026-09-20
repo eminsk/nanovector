@@ -1,0 +1,22 @@
+Source: python-nanovector
+Section: python
+Priority: optional
+Maintainer: eminsk <M_N_N@tut.by>
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               pybuild-plugin-pyproject,
+               python3-all-dev,
+               python3-setuptools,
+               python3-numpy
+Standards-Version: 4.6.2
+Homepage: https://github.com/eminsk/nanovector
+
+Package: python3-nanovector
+Architecture: any
+Depends: ${shlibs:Depends},
+         ${misc:Depends},
+         ${python3:Depends},
+         python3-numpy
+Description: Minimalist SIMD-accelerated vector search and episodic memory engine
+ The SQLite of Vector Search and episodic memory for AI agents in ~120KB.
+ Pure C99, AVX2+FMA, ARM NEON, and zero external dependencies.

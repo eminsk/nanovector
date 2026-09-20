@@ -1,0 +1,18 @@
+pkgbase = python-nanovector
+	pkgdesc = Minimalist, bare-metal SIMD vector search and episodic memory engine
+	pkgver = 0.1.4
+	pkgrel = 1
+	url = https://github.com/eminsk/nanovector
+	arch = x86_64
+	arch = aarch64
+	license = MIT
+	makedepends = python-build
+	makedepends = python-installer
+	makedepends = python-wheel
+	makedepends = python-setuptools
+	depends = python
+	depends = python-numpy
+	source = https://files.pythonhosted.org/packages/source/n/nanovector/nanovector-0.1.4.tar.gz
+	sha256sums = 5d0b7b044152421ce3343ee7fed8439ebdce86cd949be5c2b4a33648f56278df
+
+pkgname = python-nanovector

@@ -1,0 +1,33 @@
+# Maintainer: eminsk <M_N_N@tut.by>
+
+pkgname=python-nanovector
+_name=nanovector
+pkgver=0.1.4
+pkgrel=1
+pkgdesc="Minimalist, bare-metal SIMD vector search and episodic memory engine"
+arch=('x86_64' 'aarch64')
+url="https://github.com/eminsk/nanovector"
+license=('MIT')
+depends=(
+  'python'
+  'python-numpy'
+)
+makedepends=(
+  'python-build'
+  'python-installer'
+  'python-wheel'
+  'python-setuptools'
+)
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/${_name}/${_name}-${pkgver}.tar.gz")
+sha256sums=('5d0b7b044152421ce3343ee7fed8439ebdce86cd949be5c2b4a33648f56278df')
+
+build() {
+  cd "${srcdir}/${_name}-${pkgver}"
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd "${srcdir}/${_name}-${pkgver}"
+  python -m installer --destdir="${pkgdir}" dist/*.whl
+  install -Dm644 LICENSE "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
+}
