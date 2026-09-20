@@ -8,7 +8,7 @@
 [![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi)](https://pypi.org/project/nanovector/)
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/nanovector.svg?style=for-the-badge)](https://anaconda.org/conda-forge/nanovector)
 [![MSYS2](https://img.shields.io/badge/MSYS2-pacman-orange.svg?style=for-the-badge)](https://packages.msys2.org/package/mingw-w64-x86_64-python-nanovector)
-[![Debian/Ubuntu](https://img.shields.io/badge/Debian%2FUbuntu-.deb%20package-E95420.svg?style=for-the-badge)](https://github.com/eminsk/nanovector/releases)
+[![Debian / Ubuntu PPA](https://img.shields.io/badge/Debian%20%2F%20Ubuntu-APT%20PPA-E95420.svg?style=for-the-badge)](https://eminsk.github.io/ppa/)
 [![Arch Linux AUR](https://img.shields.io/badge/Arch_Linux-AUR-1793D1.svg?style=for-the-badge)](https://aur.archlinux.org/packages/python-nanovector)
 [![Python Versions](https://img.shields.io/badge/Python-3.8%20--%203.15-brightgreen?style=for-the-badge)](https://pypi.org/project/nanovector/)
 [![PyPy](https://img.shields.io/badge/PyPy-3.8%20--%203.11-orange?style=for-the-badge)](https://www.pypy.org/)
@@ -35,6 +35,7 @@
 | **PyPI (Standard)** | `pip install nanovector` |
 | **Conda-Forge** | `conda install -c conda-forge nanovector` |
 | **MSYS2 (MinGW-w64)** | `pacman -S mingw-w64-x86_64-python-nanovector` |
+| **Ubuntu / Debian (APT PPA)** | `curl -sS https://eminsk.github.io/ppa/setup.sh \| sudo bash`<br>`sudo apt install python3-nanovector` |
 | **Ubuntu / Debian (.deb)** | `sudo dpkg -i python3-nanovector_0.1.4-1_amd64.deb` |
 | **Arch Linux (AUR)** | `yay -S python-nanovector` |
 
