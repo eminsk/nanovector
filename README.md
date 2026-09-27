@@ -9,7 +9,7 @@
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/nanovector.svg?style=for-the-badge)](https://anaconda.org/conda-forge/nanovector)
 [![Debian / Ubuntu PPA](https://img.shields.io/badge/Debian%20%2F%20Ubuntu-APT%20PPA-E95420.svg?style=for-the-badge)](https://eminsk.github.io/ppa/)
 [![Python Versions](https://img.shields.io/badge/Python-3.8%20--%203.15-brightgreen?style=for-the-badge)](https://pypi.org/project/nanovector/)
-[![PyPy](https://img.shields.io/badge/PyPy-3.8%20--%203.11-orange?style=for-the-badge)](https://www.pypy.org/)
+[![PyPy](https://img.shields.io/badge/PyPy-3.8%20--%203.12-orange?style=for-the-badge)](https://www.pypy.org/)
 [![No-GIL](https://img.shields.io/badge/No--GIL-3.13t%20--%203.15t-purple?style=for-the-badge)](https://peps.python.org/pep-0703/)
 [![GitHub Release](https://img.shields.io/github/v/release/eminsk/nanovector?style=for-the-badge&color=orange)](https://github.com/eminsk/nanovector/releases)
 [![CI Test Suite](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge)](https://github.com/eminsk/nanovector/actions)
@@ -46,7 +46,7 @@
 |:---|:---|:---|:---:|
 | **CPython (Standard)** | 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14, 3.15 | Native C AVX2 / NEON extension + Buffer Protocol | ✅ Fully Supported |
 | **CPython (Free-Threaded)** | 3.13t, 3.14t, 3.15t | Multi-core No-GIL (`Py_BEGIN_ALLOW_THREADS`) | ✅ Fully Supported |
-| **PyPy (JIT Accelerated)** | 3.8, 3.9, 3.10, 3.11 | High-speed JIT tracing / C-API & ctypes | ✅ Fully Supported |
+| **PyPy (JIT Accelerated)** | 3.8, 3.9, 3.10, 3.11, 3.12 | High-speed JIT tracing / C-API & ctypes | ✅ Fully Supported |
 | **Operating Systems** | Windows (7, 8, 10, 11), Linux, macOS (Intel & Apple Silicon) | x86_64 (AVX2/FMA), ARM64 (NEON) | ✅ Fully Supported |
 
 ---
