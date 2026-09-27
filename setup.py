@@ -16,7 +16,13 @@ class BuildExt(build_ext):
     def build_extensions(self):
         compiler_type = self.compiler.compiler_type
         machine = platform.machine().lower()
-        is_arm = machine in ("arm64", "aarch64") or ("arm" in machine)
+        archflags = os.environ.get("ARCHFLAGS", "").lower()
+        if "x86_64" in archflags:
+            is_arm = False
+        elif "arm64" in archflags:
+            is_arm = True
+        else:
+            is_arm = machine in ("arm64", "aarch64") or ("arm" in machine)
 
         for ext in self.extensions:
             if compiler_type == "msvc":
