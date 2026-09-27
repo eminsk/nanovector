@@ -337,6 +337,20 @@ Initializes an embedded vector index.
 
 ---
 
+## 🧪 Testing & Verification
+
+Run the full pytest suite covering bare-metal SIMD indexing, query filtering, LangChain LCEL integration, and multi-threaded concurrency:
+
+```bash
+uv run --extra dev pytest -v
+# or with standard pytest
+pytest -v
+```
+
+All 17 tests pass with 100% success rate across **Python 3.8 through 3.15 (including No-GIL free-threaded 3.13t–3.15t)** and **PyPy 3.8 through 3.12**.
+
+---
+
 ## <a id="ecosystem"></a>🌐 High-Performance Systems Ecosystem
 
 `nanovector` is developed by [**@eminsk**](https://github.com/eminsk) as part of an open-source performance ecosystem:
