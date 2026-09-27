@@ -44,11 +44,11 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip setuptools wheel pytest
-        python -m pip install --find-links https://github.com/eminsk/yfinance-ta-patterns/releases/expanded_assets/v0.3.30 --find-links https://github.com/eminsk/yfinance-ta-patterns/releases/expanded_assets/v0.3.26 "numpy>=1.20,<2; implementation_name == 'pypy' and python_version < '3.10'" "numpy>=1.20; implementation_name != 'pypy' or python_version >= '3.10'" "typing-extensions>=4.0; python_version < '3.10'" || true
+        python -m pip install --find-links https://github.com/eminsk/yfinance-ta-patterns/releases/expanded_assets/v0.3.30 --find-links https://github.com/eminsk/yfinance-ta-patterns/releases/expanded_assets/v0.3.26 "numpy>=1.20,<2; implementation_name == 'pypy' and python_version < '3.10'" "numpy>=1.20; (implementation_name != 'pypy' and python_version <= '3.13') or (implementation_name == 'pypy' and python_version >= '3.10' and python_version < '3.12')" "numpy>=2.3.0; implementation_name != 'pypy' and python_version >= '3.14'" "typing-extensions>=4.0; python_version < '3.10'" || true
 
     - name: Install Package
       run: |
-        python -m pip install -e . --no-build-isolation || python -m pip install -e .
+        python -m pip install -e . --no-build-isolation --no-deps || python -m pip install -e . --no-deps
 
     - name: Run Pytest
       env:
