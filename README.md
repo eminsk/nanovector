@@ -30,10 +30,17 @@
 
 | Platform / Manager | Installation Command |
 |---|---|
-| **PyPI (Standard)** | `pip install nanovector` |
+| **PyPI (pip)** | `pip install nanovector` |
+| **PyPI (uv)** | `uv add nanovector` |
 | **Conda-Forge** | `conda install -c conda-forge nanovector` |
 | **Ubuntu / Debian (APT PPA)** | `curl -sS https://eminsk.github.io/ppa/setup.sh \| sudo bash`<br>`sudo apt install python3-nanovector` |
 | **Ubuntu / Debian (.deb)** | `sudo dpkg -i python3-nanovector_0.1.4-1_amd64.deb` |
+
+```bash
+pip install nanovector
+# or with uv
+uv add nanovector
+```
 
 
 </div>
