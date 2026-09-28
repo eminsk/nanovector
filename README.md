@@ -34,7 +34,7 @@
 | **PyPI (uv)** | `uv add nanovector` |
 | **Conda-Forge** | `conda install -c conda-forge nanovector` |
 | **Ubuntu / Debian (APT PPA)** | `curl -sS https://eminsk.github.io/ppa/setup.sh \| sudo bash`<br>`sudo apt install python3-nanovector` |
-| **Ubuntu / Debian (.deb)** | `sudo dpkg -i python3-nanovector_0.1.5-1_amd64.deb` |
+| **Ubuntu / Debian (.deb)** | `sudo dpkg -i python3-nanovector_0.1.6-1_amd64.deb` |
 
 ```bash
 pip install nanovector

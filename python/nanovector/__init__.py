@@ -23,7 +23,7 @@ except ImportError:
         from _ext import Index as _NativeIndex, version, simd_backend
     except ImportError:
         _NativeIndex = None
-        def version(): return "0.1.5"
+        def version(): return "0.1.6"
         def simd_backend(): return "Pure-Python (Zero-Dependency Fallback Engine)"
 
 __version__ = version()
