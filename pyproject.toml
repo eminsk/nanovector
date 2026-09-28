@@ -49,6 +49,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: 3.15",
+    "Programming Language :: Python :: 3.16",
     "Programming Language :: Python :: Implementation :: CPython",
     "Programming Language :: Python :: Implementation :: PyPy",
     "Topic :: Scientific/Engineering :: Artificial Intelligence",
@@ -58,7 +59,7 @@ requires-python = ">=3.8"
 dependencies = [
     "numpy>=1.20, <2; implementation_name == 'pypy' and python_version < '3.10'",
     "numpy>=1.20; (implementation_name != 'pypy' and python_version <= '3.13') or (implementation_name == 'pypy' and python_version >= '3.10' and python_version < '3.12')",
-    "numpy>=2.3.0; implementation_name != 'pypy' and python_version >= '3.14'",
+    "numpy>=2.3.0; implementation_name != 'pypy' and python_version >= '3.14' and python_version < '3.16'",
     "typing-extensions>=4.0; python_version < '3.10'",
 ]
 

@@ -499,5 +499,9 @@ PyMODINIT_FUNC PyInit__ext(void) {
         return NULL;
     }
 
+#if defined(Py_GIL_DISABLED) && defined(Py_MOD_GIL_NOT_USED)
+    PyUnstable_Module_SetGIL(m, Py_MOD_GIL_NOT_USED);
+#endif
+
     return m;
 }

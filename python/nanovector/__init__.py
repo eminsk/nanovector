@@ -6,6 +6,8 @@ MIT License
 
 import sys
 import json
+import math
+import struct
 from typing import List, Optional, Any, Dict, Union, Callable, Sequence
 from dataclasses import dataclass
 
@@ -20,7 +22,7 @@ except ImportError:
     except ImportError:
         _NativeIndex = None
         def version(): return "0.1.5"
-        def simd_backend(): return "Scalar (Pending Build)"
+        def simd_backend(): return "Pure-Python (Zero-Dependency Fallback Engine)"
 
 __version__ = version()
 __backend__ = simd_backend()
@@ -97,9 +99,132 @@ class Match:
         return f"Match(id='{self.id}', score={self.score:.4f}, metadata={self.metadata!r})"
 
 
+class _PurePythonIndex:
+    """Zero-dependency pure-Python vector index fallback with exact parity."""
+
+    def __init__(self, dim: int, metric: str = "cosine", normalize: bool = False):
+        if dim == 0:
+            raise ValueError("Dimension 'dim' must be greater than 0")
+        m = metric.lower()
+        if m in ("cosine", "dot", "ip", "l2", "euclidean"):
+            if m == "ip":
+                m = "dot"
+            elif m == "euclidean":
+                m = "l2"
+        else:
+            raise ValueError(f"Invalid metric '{metric}'. Supported metrics: 'cosine', 'dot'/'ip', 'l2'/'euclidean'")
+        self.dim: int = int(dim)
+        self.metric: str = m
+        self.normalize: bool = bool(normalize)
+        self.count: int = 0
+        self._ids: List[str] = []
+        self._vectors: List[List[float]] = []
+        self._norms: List[float] = []
+        self._metadatas: List[Optional[str]] = []
+
+    def _convert_vec(self, v: Any) -> tuple[List[float], float]:
+        if hasattr(v, "tolist"):
+            raw = v.tolist()
+        else:
+            raw = list(v)
+        if len(raw) != self.dim:
+            raise ValueError(f"Vector dim {len(raw)} does not match index dim {self.dim}")
+        flts = [float(x) for x in raw]
+        norm = math.sqrt(sum(x * x for x in flts))
+        if self.normalize:
+            if norm > 1e-12:
+                flts = [x / norm for x in flts]
+                norm = 1.0
+        return flts, norm
+
+    def add(self, id: str, vector: Any, metadata: Optional[str] = None) -> None:
+        flts, norm = self._convert_vec(vector)
+        self._ids.append(str(id))
+        self._vectors.append(flts)
+        self._norms.append(norm)
+        self._metadatas.append(metadata)
+        self.count += 1
+
+    def add_batch(self, ids: List[str], vectors: Any, metadatas: Optional[Sequence[Optional[str]]] = None) -> None:
+        for i, id_val in enumerate(ids):
+            m = metadatas[i] if metadatas and i < len(metadatas) else None
+            self.add(id_val, vectors[i], m)
+
+    def search(self, query: Any, top_k: int = 10) -> List[Dict[str, Any]]:
+        if self.count == 0 or top_k <= 0:
+            return []
+        q_vec, q_norm = self._convert_vec(query)
+        scores: List[tuple[float, int]] = []
+        is_l2 = (self.metric == "l2")
+
+        for i in range(self.count):
+            vec = self._vectors[i]
+            if is_l2:
+                dist_sq = sum((a - b) * (a - b) for a, b in zip(q_vec, vec))
+                scores.append((dist_sq, i))
+            elif self.metric == "cosine":
+                denom = q_norm * self._norms[i]
+                dot = sum(a * b for a, b in zip(q_vec, vec))
+                score = (dot / denom) if denom > 1e-12 else 0.0
+                scores.append((score, i))
+            else:  # dot
+                dot = sum(a * b for a, b in zip(q_vec, vec))
+                scores.append((dot, i))
+
+        scores.sort(key=lambda x: x[0], reverse=(not is_l2))
+        top = scores[:top_k]
+        return [
+            {"id": self._ids[i], "score": float(s), "metadata": self._metadatas[i]}
+            for s, i in top
+        ]
+
+    def save(self, filepath: str) -> None:
+        metric_code = 0 if self.metric == "cosine" else (1 if self.metric == "dot" else 2)
+        with open(filepath, "wb") as f:
+            hdr = struct.pack("<4sIIQII36s", b"NVEC", 1, self.dim, self.count, metric_code, int(self.normalize), b"\x00" * 36)
+            f.write(hdr)
+            for v in self._vectors:
+                f.write(struct.pack(f"<{len(v)}f", *v))
+            for i in range(self.count):
+                id_b = self._ids[i].encode("utf-8")
+                f.write(struct.pack("<H", len(id_b)))
+                f.write(id_b)
+                meta_b = self._metadatas[i].encode("utf-8") if self._metadatas[i] else b""
+                f.write(struct.pack("<I", len(meta_b)))
+                f.write(meta_b)
+
+    @classmethod
+    def load(cls, filepath: str) -> "_PurePythonIndex":
+        with open(filepath, "rb") as f:
+            hdr_bytes = f.read(64)
+            if len(hdr_bytes) < 64:
+                raise IOError(f"Invalid header in {filepath}")
+            magic, ver, dim, count, metric_code, norm_code, _ = struct.unpack("<4sIIQII36s", hdr_bytes)
+            if magic != b"NVEC" or ver != 1:
+                raise IOError(f"Invalid magic or version in {filepath}")
+            metric_str = "cosine" if metric_code == 0 else ("dot" if metric_code == 1 else "l2")
+            idx = cls(dim=dim, metric=metric_str, normalize=bool(norm_code))
+            for _ in range(count):
+                v_bytes = f.read(dim * 4)
+                flts = list(struct.unpack(f"<{dim}f", v_bytes))
+                idx._vectors.append(flts)
+                norm = math.sqrt(sum(x * x for x in flts))
+                idx._norms.append(norm)
+            for _ in range(count):
+                id_len = struct.unpack("<H", f.read(2))[0]
+                id_str = f.read(id_len).decode("utf-8") if id_len > 0 else ""
+                idx._ids.append(id_str)
+                meta_len = struct.unpack("<I", f.read(4))[0]
+                meta_str = f.read(meta_len).decode("utf-8") if meta_len > 0 else None
+                idx._metadatas.append(meta_str)
+            idx.count = count
+            return idx
+
+
 class Index:
     """
-    High-performance embedded vector index with SIMD AVX2/NEON/FASM acceleration.
+    High-performance embedded vector index with SIMD AVX2/NEON/FASM acceleration
+    and pure-Python fallback.
 
     Parameters
     ----------
@@ -112,9 +237,10 @@ class Index:
     """
 
     def __init__(self, dim: int, metric: str = "cosine", normalize: bool = False):
-        if _NativeIndex is None:
-            raise RuntimeError("NanoVector C extension is not compiled.")
-        self._index = _NativeIndex(dim=dim, metric=metric, normalize=normalize)
+        if _NativeIndex is not None:
+            self._index = _NativeIndex(dim=dim, metric=metric, normalize=normalize)
+        else:
+            self._index = _PurePythonIndex(dim=dim, metric=metric, normalize=normalize)
 
     @property
     def dim(self) -> int:
@@ -270,11 +396,14 @@ class Index:
         Index
             Loaded Index instance.
         """
-        if _NativeIndex is None:
-            raise RuntimeError("NanoVector C extension is not compiled.")
-        native = _NativeIndex.load(filepath)
         wrapper = cls.__new__(cls)
-        wrapper._index = native
+        if _NativeIndex is not None:
+            try:
+                wrapper._index = _NativeIndex.load(filepath)
+                return wrapper
+            except Exception:
+                pass
+        wrapper._index = _PurePythonIndex.load(filepath)
         return wrapper
 
 
