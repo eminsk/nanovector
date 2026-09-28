@@ -4,11 +4,13 @@ Copyright (c) 2026 eminsk (M_N_Nik@yahoo.com)
 MIT License
 """
 
+from __future__ import annotations
+
 import sys
 import json
 import math
 import struct
-from typing import List, Optional, Any, Dict, Union, Callable, Sequence
+from typing import List, Optional, Any, Dict, Union, Callable, Sequence, Tuple
 from dataclasses import dataclass
 
 _dataclass_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
@@ -122,7 +124,7 @@ class _PurePythonIndex:
         self._norms: List[float] = []
         self._metadatas: List[Optional[str]] = []
 
-    def _convert_vec(self, v: Any) -> tuple[List[float], float]:
+    def _convert_vec(self, v: Any) -> Tuple[List[float], float]:
         if hasattr(v, "tolist"):
             raw = v.tolist()
         else:
