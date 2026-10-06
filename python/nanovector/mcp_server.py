@@ -185,18 +185,21 @@ class NanoVectorMCPServer:
                 tool_name = params.get("name", "")
                 args = params.get("arguments") or {}
                 output = self._call_tool(tool_name, args)
+                call_result: dict[str, Any] = {
+                    "content": [
+                        {
+                            "type": "text",
+                            "text": json.dumps(output, ensure_ascii=False, indent=2),
+                        }
+                    ],
+                    "isError": False,
+                }
+                if isinstance(output, dict):
+                    call_result["structuredContent"] = output
                 return {
                     "jsonrpc": "2.0",
                     "id": req_id,
-                    "result": {
-                        "content": [
-                            {
-                                "type": "text",
-                                "text": json.dumps(output, ensure_ascii=False, indent=2),
-                            }
-                        ],
-                        "isError": False,
-                    },
+                    "result": call_result,
                 }
 
             return {
