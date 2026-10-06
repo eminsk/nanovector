@@ -15,6 +15,7 @@
 [![CI Test Suite](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge)](https://github.com/eminsk/nanovector/actions)
 [![Open In Colab](https://img.shields.io/badge/Open%20in%20Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![MCP Server](https://img.shields.io/badge/MCP-Native_Stdio_Server-00a67e?style=for-the-badge)](#mcp-server)
 [![SIMD](https://img.shields.io/badge/SIMD-AVX2%20%7C%20NEON%20%7C%20FASM-purple?style=for-the-badge)](#architecture)
 
 <p align="center">
@@ -23,7 +24,8 @@
   <a href="#colab-demo">Google Colab</a> •
   <a href="#why-nanovector">Why NanoVector?</a> •
   <a href="#benchmarks">Benchmarks</a> •
-  <a href="#architecture">Architecture</a>
+  <a href="#architecture">Architecture</a> •
+  <a href="#ecosystem">Ecosystem</a>
 </p>
 
 ### 📦 Multi-Platform Installation
