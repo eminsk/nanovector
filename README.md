@@ -222,6 +222,30 @@ reloaded_store = NanoVectorStore.load("agent_brain.nvec", embedding=embeddings)
 
 ---
 
+## 🤖 Native MCP (Model Context Protocol) Server
+
+NanoVector includes a built-in, **zero-dependency MCP JSON-RPC 2.0 Server** (`nanovector-mcp`) with a multilingual (RU/EN) feature-hashing + char n-gram embedder. Connect it to **Claude Desktop**, **Cursor**, **Windsurf**, or **Antigravity** to give your AI assistant sub-millisecond persistent `.nvec` episodic memory (`nanovector_remember`, `nanovector_recall`, `nanovector_stats`):
+
+```json
+{
+  "mcpServers": {
+    "nanovector-memory": {
+      "command": "nanovector-mcp",
+      "args": ["--db", "~/.nanovector/memory.nvec", "--dim", "384"]
+    }
+  }
+}
+```
+
+Or launch directly from terminal:
+```bash
+nanovector-mcp --db agent_memory.nvec
+# or
+python -m nanovector --mcp --db agent_memory.nvec
+```
+
+---
+
 ## <a id="colab-demo"></a>🚀 Interactive Google Colab Demo
 
 Run NanoVector interactively in your browser with zero local setup:

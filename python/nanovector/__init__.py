@@ -418,6 +418,9 @@ def __getattr__(name: str) -> Any:
     if name == "NanoVectorStore":
         from nanovector.integrations.langchain import NanoVectorStore
         return NanoVectorStore
+    if name in ("NanoVectorMCPServer", "embed_text"):
+        from nanovector import mcp_server
+        return getattr(mcp_server, name)
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 
@@ -430,4 +433,6 @@ __all__ = [
     "__version__",
     "__backend__",
     "NanoVectorStore",
+    "NanoVectorMCPServer",
+    "embed_text",
 ]
