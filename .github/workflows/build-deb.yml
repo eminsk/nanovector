@@ -35,7 +35,7 @@ jobs:
           path: deb-dist/*.deb
 
       - name: Release Asset
-        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ startsWith(github.ref, 'refs/tags/v') && github.ref_name || 'v0.1.6' }}
           files: deb-dist/*.deb

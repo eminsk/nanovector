@@ -10,7 +10,7 @@
 [![Debian / Ubuntu PPA](https://img.shields.io/badge/Debian%20%2F%20Ubuntu-APT%20PPA-E95420.svg?style=for-the-badge)](https://eminsk.github.io/ppa/)
 [![Python Versions](https://img.shields.io/badge/Python-3.8%20--%203.16-brightgreen?style=for-the-badge)](https://pypi.org/project/nanovector/)
 [![PyPy](https://img.shields.io/badge/PyPy-3.8%20--%203.12-orange?style=for-the-badge)](https://www.pypy.org/)
-[![No-GIL](https://img.shields.io/badge/No--GIL-3.13t%20--%203.15t-purple?style=for-the-badge)](https://peps.python.org/pep-0703/)
+[![No-GIL](https://img.shields.io/badge/No--GIL-3.13t%20--%203.16t-purple?style=for-the-badge)](https://peps.python.org/pep-0703/)
 [![GitHub Release](https://img.shields.io/github/v/release/eminsk/nanovector?style=for-the-badge&color=orange)](https://github.com/eminsk/nanovector/releases)
 [![CI Test Suite](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge)](https://github.com/eminsk/nanovector/actions)
 [![Open In Colab](https://img.shields.io/badge/Open%20in%20Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb)
@@ -52,7 +52,7 @@ uv add nanovector
 | Runtime / Implementation | Supported Versions | Execution Mode | Status |
 |:---|:---|:---|:---:|
 | **CPython (Standard)** | 3.8, 3.9, 3.10, 3.11, 3.12, 3.13, 3.14, 3.15, 3.16 (Alpha) | Native C AVX2 / NEON extension + Buffer Protocol | ✅ Fully Supported |
-| **CPython (Free-Threaded)** | 3.13t, 3.14t, 3.15t | Multi-core No-GIL (`Py_BEGIN_ALLOW_THREADS`) | ✅ Fully Supported |
+| **CPython (Free-Threaded)** | 3.13t, 3.14t, 3.15t, 3.16t (Alpha) | Multi-core No-GIL (`Py_BEGIN_ALLOW_THREADS`) | ✅ Fully Supported |
 | **PyPy (JIT Accelerated)** | 3.8, 3.9, 3.10, 3.11, 3.12 | High-speed JIT tracing / C-API & ctypes | ✅ Fully Supported |
 | **Operating Systems** | Windows (7, 8, 10, 11), Linux, macOS (Intel & Apple Silicon) | x86_64 (AVX2/FMA), ARM64 (NEON) | ✅ Fully Supported |
 
@@ -332,7 +332,7 @@ Initializes an embedded vector index.
 * **`match.score`** *(float)*: Similarity score or distance.
 * **`match.meta`** *(dict or Any)*: Automatically parses JSON metadata string into a Python dict or primitive.
 * **`nanovector.NanoVectorStore`**: Drop-in LangChain `VectorStore` class compatible with LCEL chains and agents.
-* **`nanovector.version()`** *(str)*: Library version string (e.g. `"0.1.3"`).
+* **`nanovector.version()`** *(str)*: Library version string (e.g. `"0.1.6"`).
 * **`nanovector.simd_backend()`** *(str)*: Active hardware acceleration backend (`"AVX2+FMA (x86_64)"`, `"ARM NEON"`, etc.).
 
 ---
@@ -347,7 +347,7 @@ uv run --extra dev pytest -v
 pytest -v
 ```
 
-All 17 tests pass with 100% success rate across **Python 3.8 through 3.15 (including No-GIL free-threaded 3.13t–3.15t)** and **PyPy 3.8 through 3.12**.
+All 17 tests pass with 100% success rate across **Python 3.8 through 3.16 (including No-GIL free-threaded 3.13t–3.16t)** and **PyPy 3.8 through 3.12**.
 
 ---
 
@@ -355,10 +355,13 @@ All 17 tests pass with 100% success rate across **Python 3.8 through 3.15 (inclu
 
 `nanovector` is developed by [**@eminsk**](https://github.com/eminsk) as part of an open-source performance ecosystem:
 
+* 🧠 [**AgentJIT**](https://github.com/eminsk/agentjit) — Just-In-Time Compiler for AI Agent Trajectories with speculative de-optimization guards (`pip install agentjit`).
 * ⚡ [**NanoGEMM**](https://github.com/eminsk/nanogemm) — Bare-metal AVX2+FMA SIMD matrix multiplication engine in ~100KB for sub-microsecond CPU neural network inference (`pip install nanogemm`).
+* 🖥️ [**NanoRecall**](https://github.com/eminsk/nanorecall) — 100% Private, offline desktop memory & semantic screen search engine powered by NanoVector (`pip install nanorecall`).
+* 🛒 [**avito-sdk**](https://github.com/eminsk/avito-sdk) — High-performance headless Avito scraping & data extraction SDK with price tracking, Playwright cookies, and Telegram/VK bots (`pip install avito-sdk`).
 * 📈 [**yfinance-ta-patterns**](https://github.com/eminsk/yfinance-ta-patterns) — Institutional-grade technical pattern scanner with AI Confluence Scoring and LLM prompt generation (`pip install yfinance-ta-patterns`).
+* 📊 [**xlsx_vievers**](https://github.com/eminsk/xlsx_vievers) — Headless Excel formula engine (129+ functions) & desktop spreadsheet processor with SSE2 SIMD math (`pip install xlsx-viewer-pro`).
 * 🎥 [**screenvideo**](https://github.com/eminsk/screenvideo) — Desktop screen recorder with WASAPI audio and standalone pure x64 FASM edition.
-* 📊 [**xlsx_vievers**](https://github.com/eminsk/xlsx_vievers) — Desktop spreadsheet processor with SSE2 SIMD hardware math engine.
 * 🔍 [**StackOverflowAPI**](https://github.com/eminsk/StackOverflowAPI) — Bilingual desktop client with native FASM x64 search client.
 
 ---
