@@ -83,16 +83,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Get current date for cache
-        id: cache-date
-        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
-
       - name: Cache CPython 3.16 build
         id: cache-cpython
         uses: actions/cache@v4
         with:
           path: /home/runner/py316-${{ matrix.mode }}
-          key: cpython-316-${{ matrix.mode }}-${{ steps.cache-date.outputs.date }}
+          key: cpython-316-${{ matrix.mode }}-v1
+          restore-keys: |
+            cpython-316-${{ matrix.mode }}-
 
       - name: Build CPython 3.16 from source (if not cached)
         if: steps.cache-cpython.outputs.cache-hit != 'true'
