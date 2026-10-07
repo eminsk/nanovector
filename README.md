@@ -17,6 +17,10 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![MCP Server](https://img.shields.io/badge/MCP-Native_Stdio_Server-00a67e?style=for-the-badge)](#mcp-server)
 [![SIMD](https://img.shields.io/badge/SIMD-AVX2%20%7C%20NEON%20%7C%20FASM-purple?style=for-the-badge)](#architecture)
+[![Donate USDT](https://img.shields.io/badge/Donate-USDT-26A17B?style=for-the-badge&logo=tether&logoColor=white)](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P)
+
+> ⭐ **Enjoying NanoVector?** Give it a star on GitHub to support development!  
+> ☕ **Want to support the author?** USDT (TRC-20): `TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P` ([TronScan](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P))
 
 <p align="center">
   <a href="#quickstart">Quickstart</a> •
@@ -389,6 +393,18 @@ All 17 tests pass with 100% success rate across **Python 3.8 through 3.16 (inclu
 * 📊 [**xlsx_vievers**](https://github.com/eminsk/xlsx_vievers) — Headless Excel formula engine (129+ functions) & desktop spreadsheet processor with SSE2 SIMD math (`pip install xlsx-viewer-pro`).
 * 🎥 [**screenvideo**](https://github.com/eminsk/screenvideo) — Desktop screen recorder with WASAPI audio and standalone pure x64 FASM edition.
 * 🔍 [**StackOverflowAPI**](https://github.com/eminsk/StackOverflowAPI) — Bilingual desktop client with native FASM x64 search client.
+
+---
+
+## ☕ Support & Donations
+
+If you find this project valuable and would like to support ongoing development, vector optimizations, and benchmarks, contributions are deeply appreciated!
+
+* **USDT (TRC-20)**:  
+  `TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P`  
+  *(Network: TRON / TRC-20 | [Verify on TronScan](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P))*
+
+[![Donate USDT](https://img.shields.io/badge/Donate-USDT_(TRC20)-26A17B?style=for-the-badge&logo=tether&logoColor=white)](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P)
 
 ---
 
