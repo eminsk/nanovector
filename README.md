@@ -396,15 +396,19 @@ All 17 tests pass with 100% success rate across **Python 3.8 through 3.16 (inclu
 
 ---
 
-## ☕ Support & Donations
+## ☕ Support, Community & Donations
 
-If you find this project valuable and would like to support ongoing development, vector optimizations, and benchmarks, contributions are deeply appreciated!
+If you find this project valuable and would like to support ongoing development:
 
-* **USDT (TRC-20)**:  
+* ⭐ **Star the Repository**: If NanoVector speeds up your similarity searches and embeddings, give us a star on GitHub — it helps more developers discover bare-metal vector search!
+* 💬 **Join Discussions**: Have ideas, use cases, or vector indexing benchmarks? Start or join a thread in [GitHub Discussions](https://github.com/eminsk/nanovector/discussions)!
+* ☕ **Donate (USDT TRC-20)**:  
   `TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P`  
   *(Network: TRON / TRC-20 | [Verify on TronScan](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P))*
 
-[![Donate USDT](https://img.shields.io/badge/Donate-USDT_(TRC20)-26A17B?style=for-the-badge&logo=tether&logoColor=white)](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P)
+[![GitHub Repo stars](https://img.shields.io/github/stars/eminsk/nanovector?style=social)](https://github.com/eminsk/nanovector)
+[![GitHub Discussions](https://img.shields.io/badge/Discussions-Join_Community-blue?logo=github&style=flat-square)](https://github.com/eminsk/nanovector/discussions)
+[![Donate USDT](https://img.shields.io/badge/Donate-USDT_(TRC20)-26A17B?style=flat-square&logo=tether&logoColor=white)](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P)
 
 ---
 
