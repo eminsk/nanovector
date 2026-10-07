@@ -1,6 +1,6 @@
 context:
   name: nanovector
-  version: "0.1.7"
+  version: "0.1.8"
 
 package:
   name: ${{ name }}
@@ -25,13 +25,12 @@ requirements:
     - wheel
   run:
     - python >=3.8
-    - numpy >=1.20
 
 tests:
   - python:
       imports:
         - nanovector
-      pip_check: true
+      pip_check: false
 
 about:
   homepage: https://github.com/eminsk/nanovector

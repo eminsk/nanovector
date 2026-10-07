@@ -19,7 +19,7 @@ jobs:
           python-version: "3.12"
 
       - name: Set up rattler-build
-        uses: prefix-dev/setup-rattler-build@v0
+        uses: prefix-dev/rattler-build-action@v0
 
       - name: Build Conda Package
         run: |
