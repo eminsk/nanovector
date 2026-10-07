@@ -74,9 +74,11 @@ jobs:
           - mode: "standard"
             configure-args: ""
             gil-flag: ""
+            bin-name: "python3.16"
           - mode: "free-threaded-nogil"
             configure-args: "--disable-gil"
             gil-flag: "-X gil=0"
+            bin-name: "python3.16t"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -104,7 +106,11 @@ jobs:
 
       - name: Verify CPython 3.16 & GIL state
         run: |
-          PYTHON_BIN=$(find /home/runner/py316-${{ matrix.mode }}/bin -name "python3*" -type f -executable | head -n 1)
+          if [ -x "/home/runner/py316-${{ matrix.mode }}/bin/${{ matrix.bin-name }}" ]; then
+            PYTHON_BIN="/home/runner/py316-${{ matrix.mode }}/bin/${{ matrix.bin-name }}"
+          else
+            PYTHON_BIN="/home/runner/py316-${{ matrix.mode }}/bin/python3"
+          fi
           $PYTHON_BIN -VV
           $PYTHON_BIN ${{ matrix.gil-flag }} -c "import sys; print('CPython 3.16 Version:', sys.version); print('Free-Threading GIL active:', getattr(sys, '_is_gil_enabled', lambda: 'N/A')())"
 
@@ -112,7 +118,11 @@ jobs:
         env:
           PYTHONPATH: python
         run: |
-          PYTHON_BIN=$(find /home/runner/py316-${{ matrix.mode }}/bin -name "python3*" -type f -executable | head -n 1)
+          if [ -x "/home/runner/py316-${{ matrix.mode }}/bin/${{ matrix.bin-name }}" ]; then
+            PYTHON_BIN="/home/runner/py316-${{ matrix.mode }}/bin/${{ matrix.bin-name }}"
+          else
+            PYTHON_BIN="/home/runner/py316-${{ matrix.mode }}/bin/python3"
+          fi
           $PYTHON_BIN -m ensurepip --default-pip || true
           $PYTHON_BIN -m pip install --upgrade pip pytest || true
           $PYTHON_BIN setup.py build_ext --inplace || true
