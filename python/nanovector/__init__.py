@@ -153,9 +153,9 @@ class _PurePythonIndex:
             self.add(id_val, vectors[i], m)
 
     def search(self, query: Any, top_k: int = 10) -> List[Dict[str, Any]]:
+        q_vec, q_norm = self._convert_vec(query)
         if self.count == 0 or top_k <= 0:
             return []
-        q_vec, q_norm = self._convert_vec(query)
         scores: List[tuple[float, int]] = []
         is_l2 = (self.metric == "l2")
 
