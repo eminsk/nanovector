@@ -7,7 +7,7 @@ MIT License
 import os
 import tempfile
 import pytest
-import numpy as np
+np = pytest.importorskip("numpy")
 from nanovector import NanoVectorStore
 from nanovector.integrations.langchain import Document
 

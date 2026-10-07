@@ -15,7 +15,7 @@ except ImportError:
                     return abs(actual - expected) <= abs
             return _Approx()
     pytest = _MockPytest()
-import numpy as np
+np = pytest.importorskip("numpy")
 from nanovector import Index, Match
 
 

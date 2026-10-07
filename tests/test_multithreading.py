@@ -7,7 +7,8 @@ MIT License
 
 import time
 import threading
-import numpy as np
+import pytest
+np = pytest.importorskip("numpy")
 import nanovector
 
 def test_concurrent_searches():

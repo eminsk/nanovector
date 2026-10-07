@@ -6,7 +6,7 @@ MIT License
 
 import os
 import pytest
-import numpy as np
+np = pytest.importorskip("numpy")
 from nanovector import Index, Match, load, version, simd_backend
 
 
