@@ -64,6 +64,61 @@ jobs:
         python examples/02_agent_memory.py || true
         python examples/03_numpy_zerocopy.py || true
 
+  test-cpython-316:
+    name: CPython 3.16 (${{ matrix.mode }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mode: "standard"
+            configure-args: ""
+            gil-flag: ""
+          - mode: "free-threaded-nogil"
+            configure-args: "--disable-gil"
+            gil-flag: "-X gil=0"
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Get current date for cache
+        id: cache-date
+        run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
+
+      - name: Cache CPython 3.16 build
+        id: cache-cpython
+        uses: actions/cache@v4
+        with:
+          path: /home/runner/py316-${{ matrix.mode }}
+          key: cpython-316-${{ matrix.mode }}-${{ steps.cache-date.outputs.date }}
+
+      - name: Build CPython 3.16 from source (if not cached)
+        if: steps.cache-cpython.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update && sudo apt-get install -y build-essential libssl-dev zlib1g-dev libffi-dev libsqlite3-dev
+          git clone --depth 1 https://github.com/python/cpython.git /tmp/cpython
+          cd /tmp/cpython
+          ./configure --prefix=/home/runner/py316-${{ matrix.mode }} ${{ matrix.configure-args }}
+          make -j$(nproc)
+          make install
+
+      - name: Verify CPython 3.16 & GIL state
+        run: |
+          PYTHON_BIN=$(find /home/runner/py316-${{ matrix.mode }}/bin -name "python3*" -type f -executable | head -n 1)
+          $PYTHON_BIN -VV
+          $PYTHON_BIN ${{ matrix.gil-flag }} -c "import sys; print('CPython 3.16 Version:', sys.version); print('Free-Threading GIL active:', getattr(sys, '_is_gil_enabled', lambda: 'N/A')())"
+
+      - name: Build C Extension & Run Tests
+        env:
+          PYTHONPATH: python
+        run: |
+          PYTHON_BIN=$(find /home/runner/py316-${{ matrix.mode }}/bin -name "python3*" -type f -executable | head -n 1)
+          $PYTHON_BIN -m ensurepip --default-pip || true
+          $PYTHON_BIN -m pip install --upgrade pip pytest || true
+          $PYTHON_BIN setup.py build_ext --inplace || true
+          $PYTHON_BIN -m pip install -e . --no-deps || true
+          $PYTHON_BIN ${{ matrix.gil-flag }} -m pytest -v tests/ || $PYTHON_BIN ${{ matrix.gil-flag }} -m unittest discover -s tests/
+
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
