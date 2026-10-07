@@ -1,0 +1,39 @@
+context:
+  name: nanovector
+  version: "0.1.7"
+
+package:
+  name: ${{ name }}
+  version: ${{ version }}
+
+source:
+  path: ..
+
+build:
+  number: 0
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+  python:
+    entry_points:
+      - nanovector-mcp = nanovector.mcp_server:main_mcp
+
+requirements:
+  host:
+    - python >=3.8
+    - pip
+    - setuptools >=61.0.0
+    - wheel
+  run:
+    - python >=3.8
+    - numpy >=1.20
+
+tests:
+  - python:
+      imports:
+        - nanovector
+      pip_check: true
+
+about:
+  homepage: https://github.com/eminsk/nanovector
+  license: MIT
+  summary: Minimalist, bare-metal SIMD-accelerated vector search and episodic memory engine for AI agents

@@ -1,0 +1,37 @@
+name: Conda Package Build & Publish
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  conda-build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up rattler-build
+        uses: prefix-dev/setup-rattler-build@v0
+
+      - name: Build Conda Package
+        run: |
+          rattler-build build --recipe recipe/recipe.yaml --output-dir dist/conda/
+
+      - name: Install Anaconda Client
+        run: |
+          pip install --upgrade anaconda-client
+
+      - name: Upload to Anaconda.org
+        if: success()
+        env:
+          ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}
+        run: |
+          anaconda --token "$ANACONDA_API_TOKEN" upload --user m_n_nik dist/conda/noarch/*.conda --skip-existing
