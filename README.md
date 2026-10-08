@@ -6,21 +6,27 @@
 **Bare-metal C99 · AVX2+FMA · ARM NEON · FASM x64 · Zero Dependencies · ~120 KB**
 
 [![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi)](https://pypi.org/project/nanovector/)
-[![Conda](https://img.shields.io/conda/vn/m_n_nik/nanovector.svg?style=for-the-badge&logo=anaconda)](https://anaconda.org/m_n_nik/nanovector)
+[![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/nanovector.svg?style=for-the-badge&logo=condaforge)](https://anaconda.org/conda-forge/nanovector)
 [![Debian / Ubuntu PPA](https://img.shields.io/badge/Debian%20%2F%20Ubuntu-APT%20PPA-E95420.svg?style=for-the-badge)](https://eminsk.github.io/ppa/)
 [![Python Versions](https://img.shields.io/badge/Python-3.8%20--%203.16-brightgreen?style=for-the-badge)](https://pypi.org/project/nanovector/)
 [![PyPy](https://img.shields.io/badge/PyPy-3.8%20--%203.12-orange?style=for-the-badge)](https://www.pypy.org/)
 [![No-GIL](https://img.shields.io/badge/No--GIL-3.13t%20--%203.16t-purple?style=for-the-badge)](https://peps.python.org/pep-0703/)
 [![GitHub Release](https://img.shields.io/github/v/release/eminsk/nanovector?style=for-the-badge&color=orange)](https://github.com/eminsk/nanovector/releases)
 [![CI Test Suite](https://img.shields.io/badge/CI-Passing-success?style=for-the-badge)](https://github.com/eminsk/nanovector/actions)
+[![GitHub Stars](https://img.shields.io/github/stars/eminsk/nanovector?style=for-the-badge&logo=github)](https://github.com/eminsk/nanovector/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/eminsk/nanovector?style=for-the-badge&color=red&logo=github)](https://github.com/eminsk/nanovector/issues)
+[![GitHub Discussions](https://img.shields.io/badge/Discussions-Join_Community-blue?style=for-the-badge&logo=github)](https://github.com/eminsk/nanovector/discussions)
 [![Open In Colab](https://img.shields.io/badge/Open%20in%20Colab-F9AB00?style=for-the-badge&logo=googlecolab&color=525252)](https://colab.research.google.com/github/eminsk/nanovector/blob/main/notebooks/nanovector_quickstart.ipynb)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 [![MCP Server](https://img.shields.io/badge/MCP-Native_Stdio_Server-00a67e?style=for-the-badge)](#mcp-server)
 [![SIMD](https://img.shields.io/badge/SIMD-AVX2%20%7C%20NEON%20%7C%20FASM-purple?style=for-the-badge)](#architecture)
-[![Donate USDT](https://img.shields.io/badge/Donate-USDT-26A17B?style=for-the-badge&logo=tether&logoColor=white)](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P)
+[![Donate USDT](https://img.shields.io/badge/Donate-USDT_(TRC20)-26A17B?style=for-the-badge&logo=tether&logoColor=white)](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P)
 
-> ⭐ **Enjoying NanoVector?** Give it a star on GitHub to support development!  
-> ☕ **Want to support the author?** USDT (TRC-20): `TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P` ([TronScan](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P))
+> ### 🤝 Community, Issues & Support
+> - 🐛 **Found a bug, accuracy issue, or vector index edge case?** Please [Open an Issue](https://github.com/eminsk/nanovector/issues) — reports are tracked and resolved quickly!
+> - 💬 **Questions, episodic memory architectures, or feature requests?** Join our [GitHub Discussions](https://github.com/eminsk/nanovector/discussions).
+> - ⭐ **Find NanoVector useful?** Give it a star on GitHub — it helps more AI agent engineers discover the engine!
+> - ☕ **Support development (USDT TRC-20):** `TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P` ([Verify on TronScan](https://tronscan.org/#/address/TDVbEdnpgNgoAhNcn1EwXxWHiR3RKLit5P))
 
 <p align="center">
   <a href="#quickstart">Quickstart</a> •
