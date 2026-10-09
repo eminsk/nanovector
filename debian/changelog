@@ -1,3 +1,9 @@
+python-nanovector (0.1.8-1) unstable; urgency=medium
+
+  * Release version 0.1.8 with bare-metal FASM SIMD engine and CPython 3.16/3.16t No-GIL.
+
+ -- eminsk <M_N_N@tut.by>  Fri, 09 Oct 2026 17:36:00 +0000
+
 python-nanovector (0.1.6-1) unstable; urgency=medium
 
   * Release version 0.1.6 with Python 3.16 support and pure-Python engine.
