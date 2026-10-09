@@ -16,16 +16,50 @@ from dataclasses import dataclass
 _dataclass_kwargs = {"slots": True} if sys.version_info >= (3, 10) else {}
 
 try:
-    from nanovector._ext import Index as _NativeIndex, version, simd_backend
+    from nanovector._ext import Index as _NativeIndex, version as _native_version, simd_backend as _native_simd_backend
 except ImportError:
-    # Fallback when running before build or in documentation generation
     try:
-        from _ext import Index as _NativeIndex, version, simd_backend
+        from _ext import Index as _NativeIndex, version as _native_version, simd_backend as _native_simd_backend
     except ImportError:
         _NativeIndex = None
-        def version(): return "0.1.8"
-        def simd_backend(): return "Pure-Python (Zero-Dependency Fallback Engine)"
+        _native_version = None
+        _native_simd_backend = None
 
+try:
+    from nanovector import fasm as _fasm_module
+except ImportError:
+    try:
+        import fasm as _fasm_module
+    except ImportError:
+        _fasm_module = None
+
+
+def version() -> str:
+    if _native_version is not None:
+        try:
+            return _native_version()
+        except Exception:
+            pass
+    return "0.1.8"
+
+
+def simd_backend() -> str:
+    if _native_simd_backend is not None:
+        try:
+            return _native_simd_backend()
+        except Exception:
+            pass
+    if _fasm_module is not None and _fasm_module.is_available():
+        return f"{_fasm_module.get_isa()} [FASM Hardware Engine]"
+    return "Pure-Python (Zero-Dependency Fallback Engine)"
+
+
+def is_fasm_available() -> bool:
+    """Return True if hardware FASM SIMD engine is loaded and operational."""
+    return _fasm_module is not None and _fasm_module.is_available()
+
+
+has_fasm = is_fasm_available
 __version__ = version()
 __backend__ = simd_backend()
 
@@ -238,11 +272,31 @@ class Index:
         If True, vectors are automatically L2-normalized upon insertion and search.
     """
 
-    def __init__(self, dim: int, metric: str = "cosine", normalize: bool = False):
-        if _NativeIndex is not None:
-            self._index = _NativeIndex(dim=dim, metric=metric, normalize=normalize)
-        else:
+    def __init__(
+        self,
+        dim: int,
+        metric: str = "cosine",
+        normalize: bool = False,
+        backend: Optional[str] = None,
+    ):
+        b = backend.lower().strip() if backend else "auto"
+        if b == "fasm":
+            if _fasm_module is None or not _fasm_module.is_available():
+                raise RuntimeError("FASM native backend is not available on this platform")
+            self._index = _fasm_module.FasmIndex(dim=dim, metric=metric, normalize=normalize)
+        elif b == "pure":
             self._index = _PurePythonIndex(dim=dim, metric=metric, normalize=normalize)
+        elif b == "native":
+            if _NativeIndex is None:
+                raise RuntimeError("C native extension is not available")
+            self._index = _NativeIndex(dim=dim, metric=metric, normalize=normalize)
+        else:  # auto
+            if _NativeIndex is not None:
+                self._index = _NativeIndex(dim=dim, metric=metric, normalize=normalize)
+            elif _fasm_module is not None and _fasm_module.is_available():
+                self._index = _fasm_module.FasmIndex(dim=dim, metric=metric, normalize=normalize)
+            else:
+                self._index = _PurePythonIndex(dim=dim, metric=metric, normalize=normalize)
 
     @property
     def dim(self) -> int:
@@ -384,7 +438,7 @@ class Index:
         self._index.save(filepath)
 
     @classmethod
-    def load(cls, filepath: str) -> "Index":
+    def load(cls, filepath: str, backend: Optional[str] = None) -> "Index":
         """
         Load an index from a .nvec file.
 
@@ -392,6 +446,8 @@ class Index:
         ----------
         filepath : str
             Path to .nvec file.
+        backend : str, optional
+            Backend to use: 'auto', 'native', 'fasm', or 'pure'.
 
         Returns
         -------
@@ -399,9 +455,22 @@ class Index:
             Loaded Index instance.
         """
         wrapper = cls.__new__(cls)
-        if _NativeIndex is not None:
+        b = backend.lower().strip() if backend else "auto"
+        if b == "fasm" and _fasm_module and _fasm_module.is_available():
+            wrapper._index = _fasm_module.FasmIndex.load(filepath)
+            return wrapper
+        if b == "pure":
+            wrapper._index = _PurePythonIndex.load(filepath)
+            return wrapper
+        if b != "pure" and _NativeIndex is not None:
             try:
                 wrapper._index = _NativeIndex.load(filepath)
+                return wrapper
+            except Exception:
+                pass
+        if b != "pure" and _fasm_module and _fasm_module.is_available():
+            try:
+                wrapper._index = _fasm_module.FasmIndex.load(filepath)
                 return wrapper
             except Exception:
                 pass
@@ -409,9 +478,9 @@ class Index:
         return wrapper
 
 
-def load(filepath: str) -> Index:
+def load(filepath: str, backend: Optional[str] = None) -> Index:
     """Convenience function to load a NanoVector index from disk."""
-    return Index.load(filepath)
+    return Index.load(filepath, backend=backend)
 
 
 def __getattr__(name: str) -> Any:
@@ -421,6 +490,8 @@ def __getattr__(name: str) -> Any:
     if name in ("NanoVectorMCPServer", "embed_text"):
         from nanovector import mcp_server
         return getattr(mcp_server, name)
+    if name == "fasm":
+        return _fasm_module
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
 
 
@@ -430,6 +501,9 @@ __all__ = [
     "load",
     "version",
     "simd_backend",
+    "is_fasm_available",
+    "has_fasm",
+    "fasm",
     "__version__",
     "__backend__",
     "NanoVectorStore",

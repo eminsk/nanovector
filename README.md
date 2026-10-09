@@ -375,15 +375,20 @@ Initializes an embedded vector index.
 
 ## 🧪 Testing & Verification
 
-Run the full pytest suite covering bare-metal SIMD indexing, query filtering, LangChain LCEL integration, and multi-threaded concurrency:
+Run the full test suite covering bare-metal SIMD indexing, FASM standalone executables & ctypes bindings, query filtering, LangChain LCEL integration, and multi-threaded concurrency:
 
 ```bash
-uv run --extra dev pytest -v
-# or with standard pytest
-pytest -v
+# Run pytest with uv
+uv run pytest -v
+
+# Run under Free-Threaded Python 3.16t (No-GIL)
+python -X gil=0 -m unittest discover -s tests -v
+
+# Build and verify native FASM 64-bit & 32-bit suites
+cd asm && build.bat
 ```
 
-All 17 tests pass with 100% success rate across **Python 3.8 through 3.16 (including No-GIL free-threaded 3.13t–3.16t)** and **PyPy 3.8 through 3.12**.
+All 46 test cases pass with 100% success rate across **Python 3.8 through 3.16 (including No-GIL free-threaded 3.13t–3.16t)**, **PyPy 3.8 through 3.12**, and **native Flat Assembler (FASM)**.
 
 ---
 

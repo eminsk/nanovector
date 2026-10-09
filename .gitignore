@@ -6,8 +6,11 @@ __pycache__/
 *.so
 *.dylib
 *.dll
-*.obj
 *.exe
+!asm/*.dll
+!asm/*.exe
+!python/nanovector/*.dll
+*.obj
 *.o
 
 # C extensions and build artifacts

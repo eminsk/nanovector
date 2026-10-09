@@ -4,10 +4,11 @@ Copyright (c) 2026 eminsk (M_N_Nik@yahoo.com)
 MIT License
 """
 
+import math
 import os
 import tempfile
-import pytest
-np = pytest.importorskip("numpy")
+import unittest
+
 from nanovector import NanoVectorStore
 from nanovector.integrations.langchain import Document
 
@@ -25,18 +26,18 @@ class DummyEmbeddings:
     def embed_documents(self, texts):
         results = []
         for t in texts:
-            v = np.zeros(len(VOCAB), dtype=np.float32)
+            v = [0.0] * len(VOCAB)
             words = t.lower().split()
             for w in words:
                 clean_w = "".join(ch for ch in w if ch.isalnum())
                 if clean_w in VOCAB:
                     v[VOCAB.index(clean_w)] += 1.0
-            norm = np.linalg.norm(v)
+            norm = math.sqrt(sum(x * x for x in v))
             if norm > 0:
-                v = v / norm
+                v = [x / norm for x in v]
             else:
                 v[0] = 1.0
-            results.append(v.tolist())
+            results.append(v)
         return results
 
     def embed_query(self, text):
@@ -164,3 +165,28 @@ def test_save_and_load_persistence():
         assert len(docs) == 1
         assert docs[0].page_content == "Persistent memory across reboots"
         assert docs[0].metadata["persisted"] is True
+
+
+class TestLangChain(unittest.TestCase):
+    """Unittest adapter for standard discovery."""
+    def test_export(self):
+        test_top_level_export()
+
+    def test_from_texts(self):
+        test_from_texts_and_similarity_search()
+
+    def test_search_score(self):
+        test_similarity_search_with_score()
+
+    def test_filtering(self):
+        test_langchain_filtering()
+
+    def test_retriever(self):
+        test_from_documents_and_as_retriever()
+
+    def test_persistence(self):
+        test_save_and_load_persistence()
+
+
+if __name__ == "__main__":
+    unittest.main()

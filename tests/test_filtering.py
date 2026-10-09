@@ -4,26 +4,19 @@ Copyright (c) 2026 eminsk (M_N_Nik@yahoo.com)
 MIT License
 """
 
-try:
-    import pytest
-except ImportError:
-    class _MockPytest:
-        @staticmethod
-        def approx(expected, abs=1e-4):
-            class _Approx:
-                def __eq__(self, actual):
-                    return abs(actual - expected) <= abs
-            return _Approx()
-    pytest = _MockPytest()
-np = pytest.importorskip("numpy")
+import unittest
 from nanovector import Index, Match
+
+
+def _approx(val, expected, tol=1e-4):
+    assert abs(val - expected) <= tol, f"Expected {expected} +/- {tol}, got {val}"
 
 
 def test_dict_metadata_addition_and_meta_property():
     dim = 8
     idx = Index(dim=dim, metric="cosine")
 
-    v1 = np.ones(dim, dtype=np.float32)
+    v1 = [1.0] * dim
     meta_dict = {"title": "Zero to Hero", "author": "eminsk", "views": 1500, "published": True}
     idx.add("doc_1", v1, metadata=meta_dict)
 
@@ -41,11 +34,11 @@ def test_batch_metadata_addition():
     dim = 4
     idx = Index(dim=dim, metric="cosine")
 
-    vectors = np.array([
+    vectors = [
         [1.0, 0.0, 0.0, 0.0],
         [0.0, 1.0, 0.0, 0.0],
         [0.0, 0.0, 1.0, 0.0],
-    ], dtype=np.float32)
+    ]
 
     metas = [
         {"cat": "tech", "lang": "c"},
@@ -68,7 +61,7 @@ def test_filtering_operators():
     dim = 4
     idx = Index(dim=dim, metric="cosine")
 
-    vectors = np.tile(np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32), (5, 1))
+    vectors = [[1.0, 0.0, 0.0, 0.0] for _ in range(5)]
     ids = [f"item_{i}" for i in range(5)]
     metas = [
         {"score": 10, "status": "draft", "tag": "c"},
@@ -114,17 +107,36 @@ def test_callable_filtering():
     dim = 4
     idx = Index(dim=dim, metric="cosine")
 
-    vectors = np.tile(np.array([1.0, 0.0, 0.0, 0.0], dtype=np.float32), (4, 1))
+    vectors = [[1.0, 0.0, 0.0, 0.0] for _ in range(4)]
     ids = ["a", "b", "c", "d"]
     metas = [
         {"x": 10, "y": 20},
-        {"x": 50, "y": 5},
-        {"x": 100, "y": 1},
-        {"x": 2, "y": 30},
+        {"x": 25, "y": 5},
+        {"x": 5, "y": 50},
+        {"x": 30, "y": 30},
     ]
     idx.add_batch(ids, vectors, metadatas=metas)
 
-    # Custom predicate: x * y > 200
-    res = idx.search(vectors[0], top_k=10, filter=lambda m: m and (m.get("x", 0) * m.get("y", 0) > 200))
-    assert len(res) == 1
-    assert res[0].id == "b"
+    # Filter where x + y >= 50
+    res = idx.search(vectors[0], top_k=10, filter=lambda m: (m.get("x", 0) + m.get("y", 0)) >= 50)
+    assert len(res) == 2
+    assert {m.id for m in res} == {"c", "d"}
+
+
+class TestFiltering(unittest.TestCase):
+    """Unittest adapter for standard discovery."""
+    def test_dict_metadata(self):
+        test_dict_metadata_addition_and_meta_property()
+
+    def test_batch_metadata(self):
+        test_batch_metadata_addition()
+
+    def test_operators(self):
+        test_filtering_operators()
+
+    def test_callable(self):
+        test_callable_filtering()
+
+
+if __name__ == "__main__":
+    unittest.main()

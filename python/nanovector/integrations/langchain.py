@@ -19,7 +19,11 @@ from typing import (
     Type,
     Union,
 )
-import numpy as np
+
+try:
+    import numpy as np
+except ImportError:
+    np = None
 
 # Try importing langchain base classes; provide zero-dependency fallbacks if absent
 try:
@@ -166,7 +170,7 @@ class NanoVectorStore(VectorStore):
         else:
             raise ValueError("Embedding object must have embed_documents method or be callable.")
 
-        vectors = np.asarray(embeddings, dtype=np.float32)
+        vectors = np.asarray(embeddings, dtype=np.float32) if np is not None else embeddings
         idx = self._ensure_index(vectors[0])
 
         # Prepare metadata payload containing the text content
@@ -203,7 +207,7 @@ class NanoVectorStore(VectorStore):
         if self._index is None or len(self._index) == 0:
             return []
 
-        query = np.asarray(embedding, dtype=np.float32)
+        query = np.asarray(embedding, dtype=np.float32) if np is not None else embedding
         matches = self._index.search(query=query, top_k=k, filter=filter)
 
         results: List[Tuple[Document, float]] = []

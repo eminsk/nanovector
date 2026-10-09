@@ -4,5 +4,7 @@ include pyproject.toml
 include src/*.h
 include src/*.c
 recursive-include src/asm *
+recursive-include asm *
+recursive-include python/nanovector *.dll *.py *.typed
 recursive-include tests *.py *.c
 recursive-include examples *.py

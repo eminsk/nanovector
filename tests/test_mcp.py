@@ -3,6 +3,9 @@ Tests for NanoVector Model Context Protocol (MCP) JSON-RPC 2.0 Server.
 """
 
 import json
+import tempfile
+import unittest
+from pathlib import Path
 from nanovector import NanoVectorMCPServer, embed_text
 
 
@@ -97,3 +100,17 @@ def test_nanovector_mcp_server_lifecycle(tmp_path):
     stats = json.loads(stats_resp["result"]["content"][0]["text"])
     assert stats["count"] == 2
     assert stats["dim"] == 128
+
+
+class TestMCP(unittest.TestCase):
+    """Unittest adapter for standard discovery."""
+    def test_embed_multilingual(self):
+        test_embed_text_multilingual()
+
+    def test_lifecycle(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            test_nanovector_mcp_server_lifecycle(Path(tmpdir))
+
+
+if __name__ == "__main__":
+    unittest.main()
