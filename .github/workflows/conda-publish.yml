@@ -19,11 +19,11 @@ jobs:
           python-version: "3.12"
 
       - name: Set up rattler-build
-        uses: prefix-dev/rattler-build-action@v0
+        uses: prefix-dev/setup-rattler-build@v0
 
       - name: Build Conda Package
         run: |
-          rattler-build build --recipe recipe/recipe.yaml --output-dir dist/conda/
+          rattler-build build -c conda-forge --recipe recipe/recipe.yaml --output-dir dist/conda/
 
       - name: Install Anaconda Client
         run: |
