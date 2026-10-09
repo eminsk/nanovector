@@ -5,7 +5,7 @@
 ### The SQLite of Vector Search & Episodic Memory for AI Agents
 **Bare-metal C99 · AVX2+FMA · ARM NEON · FASM x64 · Zero Dependencies · ~120 KB**
 
-[![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi)](https://pypi.org/project/nanovector/)
+[![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi&logo=pypi)](https://pypi.org/project/nanovector/)
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/nanovector.svg?style=for-the-badge&logo=condaforge)](https://anaconda.org/conda-forge/nanovector)
 [![Debian / Ubuntu PPA](https://img.shields.io/badge/Debian%20%2F%20Ubuntu-APT%20PPA-E95420.svg?style=for-the-badge)](https://eminsk.github.io/ppa/)
 [![Python Versions](https://img.shields.io/badge/Python-3.8%20--%203.16-brightgreen?style=for-the-badge)](https://pypi.org/project/nanovector/)
@@ -44,7 +44,7 @@
 |---|---|
 | **PyPI (pip)** | `pip install nanovector` |
 | **PyPI (uv)** | `uv add nanovector` |
-| **Conda (Anaconda.org)** | `conda install -c m_n_nik nanovector` |
+| **Conda (Conda-Forge)** | `conda install -c conda-forge nanovector` \| `pixi add nanovector` |
 | **Ubuntu / Debian (APT PPA)** | `curl -sS https://eminsk.github.io/ppa/setup.sh \| sudo bash`<br>`sudo apt install python3-nanovector` |
 | **Ubuntu / Debian (.deb)** | `sudo dpkg -i python3-nanovector_0.1.8-1_amd64.deb` |
 
