@@ -17,13 +17,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-
-      - name: Set up rattler-build
-        uses: prefix-dev/setup-rattler-build@v0
+      - name: Install rattler-build
+        run: |
+          mkdir -p "$HOME/.local/bin"
+          curl -fsSL https://github.com/prefix-dev/rattler-build/releases/latest/download/rattler-build-x86_64-unknown-linux-musl -o "$HOME/.local/bin/rattler-build"
+          chmod +x "$HOME/.local/bin/rattler-build"
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
       - name: Build Conda Package
         run: |
           rattler-build build -c conda-forge --recipe recipe/recipe.yaml --output-dir dist/conda/
+
 
       - name: Install Anaconda Client
         run: |
