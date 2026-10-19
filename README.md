@@ -8,6 +8,8 @@
 [![PyPI Version](https://img.shields.io/pypi/v/nanovector?style=for-the-badge&color=blue&label=pypi&logo=pypi)](https://pypi.org/project/nanovector/)
 [![Conda-Forge](https://img.shields.io/conda/vn/conda-forge/nanovector.svg?style=for-the-badge&logo=condaforge)](https://anaconda.org/conda-forge/nanovector)
 [![Debian / Ubuntu PPA](https://img.shields.io/badge/Debian%20%2F%20Ubuntu-APT%20PPA-E95420.svg?style=for-the-badge)](https://eminsk.github.io/ppa/)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/nanovector.svg?style=for-the-badge&logo=pypi)](https://pypi.org/project/nanovector/)
+[![Conda Downloads](https://img.shields.io/conda/dn/conda-forge/nanovector.svg?style=for-the-badge&logo=condaforge)](https://anaconda.org/conda-forge/nanovector)
 [![Python Versions](https://img.shields.io/badge/Python-3.8%20--%203.16-brightgreen?style=for-the-badge)](https://pypi.org/project/nanovector/)
 [![PyPy](https://img.shields.io/badge/PyPy-3.8%20--%203.12-orange?style=for-the-badge)](https://www.pypy.org/)
 [![No-GIL](https://img.shields.io/badge/No--GIL-3.13t%20--%203.16t-purple?style=for-the-badge)](https://peps.python.org/pep-0703/)
